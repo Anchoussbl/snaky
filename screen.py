@@ -2,7 +2,6 @@ import pygame
 
 WIDTH = 360
 HEIGHT = 360
-FPS = 30
 # Задаем цвета
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
