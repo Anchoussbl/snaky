@@ -39,9 +39,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
-                    direction = self.key_to_dir.get(event.key, None)
-                    if direction is not None:
-                        self.b_turns.append(Block(self.snake.blocks[0].x, self.snake.blocks[0].y, direction=direction))
+                    self.handle_direction_change(event)
 
             if time_elapsed > 1000:
                 # Обновляем логику игры
@@ -51,8 +49,24 @@ class Game:
             blocks = self.snake.blocks[:]
             blocks.append(self.food.block)
             self.screen.draw(blocks)
+
+            for block in self.snake.blocks:
+                if block.x < 0 or block.y < 0 or \
+                        block.x >= 10 or block.y >= 10:
+                    self.running = False
+                    return
+
             if not self.running:
-                pygame.quit()
+                self.game_over()
+
+    def handle_direction_change(self, event):
+        direction = self.key_to_dir.get(event.key, None)
+        d = self.snake.blocks[0].direction
+        if ((direction == Direction.Up or direction == Direction.Down) and
+            (d == Direction.Left or d == Direction.Right)) or \
+                ((direction == Direction.Left or direction == Direction.Right) and
+                 (d == Direction.Up or d == Direction.Down)):
+            self.b_turns.append(Block(self.snake.blocks[0].x, self.snake.blocks[0].y, direction=direction))
 
     def handle_movement(self):
         for b in self.snake.blocks:
@@ -70,3 +84,6 @@ class Game:
                 b.x -= 1
             elif b.direction == Direction.Right:
                 b.x += 1
+
+    def game_over(self):
+        pygame.quit()
