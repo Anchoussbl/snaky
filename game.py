@@ -1,5 +1,3 @@
-import pygame
-import sys
 from screen import *
 from snake import *
 from food import *
@@ -55,6 +53,14 @@ class Game:
                         block.x >= 10 or block.y >= 10:
                     self.running = False
                     return
+
+            for block in self.snake.blocks:
+                count = 0
+                for b in self.snake.blocks:
+                    if block == b:
+                        count += 1
+                if count > 1:
+                    self.running = False
 
             if not self.running:
                 self.game_over()
