@@ -8,10 +8,7 @@ class Snake:
 
     def __init__(self):
         self.blocks = [Block(4, 4, self.color, Direction.Up),
-                       Block(4, 5, self.color, Direction.Up),
-                       Block(4, 6, self.color, Direction.Up),
-                       Block(4, 7, self.color, Direction.Up),
-                       Block(4, 8, self.color, Direction.Up)]
+                       Block(4, 5, self.color, Direction.Up)]
 
     def move(self, offset_x, offset_y):
         for b in self.blocks:
