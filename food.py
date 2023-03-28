@@ -6,5 +6,5 @@ class Food:
     color = YELLOW
     block = None
 
-    def __init__(self, x=random.randint(0, 9), y=random.randint(0, 9)):
+    def __init__(self, x=0, y=0):
         self.block = Block(x, y, self.color)

@@ -1,3 +1,5 @@
+import random
+
 from screen import *
 from snake import *
 from food import *
@@ -15,6 +17,7 @@ class Game:
         self.screen = Screen()
         self.snake = Snake()
         self.food = Food()
+        self.place_food()
         self.b_turns = []
 
         self.key_to_dir = {pygame.K_UP: Direction.Up,
@@ -62,6 +65,11 @@ class Game:
                 if count > 1:
                     self.running = False
 
+            if self.snake.blocks[0] == self.food.block:
+                self.place_food()
+                self.snake.add_block()
+
+
             if not self.running:
                 self.game_over()
 
@@ -93,3 +101,11 @@ class Game:
 
     def game_over(self):
         pygame.quit()
+
+    def place_food(self):
+        self.food.block.x = random.randint(0, 9)
+        self.food.block.y = random.randint(0, 9)
+        while self.food.block in self.snake.blocks:
+            self.food.block.x = random.randint(0, 9)
+            self.food.block.y = random.randint(0, 9)
+
