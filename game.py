@@ -1,8 +1,10 @@
-import random
-
+from food import *
 from screen import *
 from snake import *
-from food import *
+from menu import *
+from pause import *
+from game_state import *
+import random
 
 
 class Game:
@@ -17,8 +19,12 @@ class Game:
         self.screen = Screen()
         self.snake = Snake()
         self.food = Food()
+        self.menu = Menu()
+        self.pause = Pause()
         self.place_food()
+        self.state = GameState.Menu
         self.b_turns = []
+        self.score = 0
 
         self.key_to_dir = {pygame.K_UP: Direction.Up,
                            pygame.K_DOWN: Direction.Down,
@@ -31,7 +37,6 @@ class Game:
 
     def run(self):
         # Цикл игры
-        score = 0
         time_elapsed = 0
         while self.running:
             time_elapsed += self.clock.tick()
@@ -41,39 +46,65 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
-                    self.handle_direction_change(event)
+                    if self.state == GameState.Running:
+                        self.handle_direction_change(event)
+                        if event.key == pygame.K_ESCAPE:
+                            self.state = GameState.Pause
+                    elif self.state == GameState.Menu:
+                        self.menu.handle_press(self, event.key)
+                    elif self.state == GameState.Pause:
+                        self.pause.handle_press(self, event.key)
+
 
             if time_elapsed > 1000:
                 # Обновляем логику игры
-                self.handle_movement()
-                time_elapsed = 0
+                if self.state == GameState.Running:
+                    self.tick()
+                    time_elapsed = 0
 
-            blocks = self.snake.blocks[:]
-            blocks.append(self.food.block)
-            self.screen.draw(blocks)
-            self.screen.draw_text(str(score))
-            self.screen.update()
+            if self.state == GameState.Running:
+                blocks = self.snake.blocks[:]
+                blocks.append(self.food.block)
+                self.screen.draw(blocks)
+                self.screen.draw_text(str(self.score))
+                self.screen.update()
+            elif self.state == GameState.Menu:
+                # отрисовываем меню
+                self.handle_menu()
+            elif self.state == GameState.Pause:
+                # отрисовываем паузу
+                self.handle_pause()
 
-            for block in self.snake.blocks:
-                if block.x < 0 or block.y < 0 or \
-                        block.x >= 10 or block.y >= 10:
-                    self.running = False
 
-            for block in self.snake.blocks:
-                count = 0
-                for b in self.snake.blocks:
-                    if block == b:
-                        count += 1
-                if count > 1:
-                    self.running = False
-
-            if self.snake.blocks[0] == self.food.block:
-                self.place_food()
-                self.snake.add_block()
-                score += 1
 
         if not self.running:
             self.game_over()
+
+    def tick(self):
+        self.handle_movement()
+        for block in self.snake.blocks:
+            if block.x < 0 or block.y < 0 or \
+                    block.x >= 10 or block.y >= 10:
+                self.running = False
+
+        for block in self.snake.blocks:
+            count = 0
+            for b in self.snake.blocks:
+                if block == b:
+                    count += 1
+            if count > 1:
+                self.running = False
+
+        if self.snake.blocks[0] == self.food.block:
+            self.place_food()
+            self.snake.add_block()
+            self.score += 1
+
+    def handle_menu(self):
+        self.menu.show(self)
+
+    def handle_pause(self):
+        self.pause.show(self)
 
     def handle_direction_change(self, event):
         direction = self.key_to_dir.get(event.key, None)
@@ -102,7 +133,7 @@ class Game:
                 b.x += 1
 
     def game_over(self):
-        pygame.quit()
+        self.running = False
 
     def place_food(self):
         self.food.block.x = random.randint(0, 9)
@@ -110,3 +141,12 @@ class Game:
         while self.food.block in self.snake.blocks:
             self.food.block.x = random.randint(0, 9)
             self.food.block.y = random.randint(0, 9)
+
+    def reset(self):
+        self.screen = Screen()
+        self.snake = Snake()
+        self.food = Food()
+        self.place_food()
+        self.state = GameState.Menu
+        self.b_turns = []
+        self.score = 0

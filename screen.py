@@ -9,6 +9,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+GREY = (100, 100, 100)
 GRID_LINE_WIDTH = 3
 
 
@@ -18,24 +19,19 @@ class Screen:
         self.display = pygame.display.set_mode((WIDTH, HEIGHT + 40))
 
     def __draw_grid(self):
-        x1 = 0
-        y1 = HEIGHT / 10
-        x2 = WIDTH
-        y2 = HEIGHT / 10
-        pygame.draw.line(self.display, WHITE, [x1, 40], [x2, 40], GRID_LINE_WIDTH) # Первая линия
-        while y1 != HEIGHT and y2 != HEIGHT:
-            pygame.draw.line(self.display, WHITE, [x1, y1 + 40], [x2, y2 + 40], GRID_LINE_WIDTH)
-            y1 += HEIGHT / 10
-            y2 += HEIGHT / 10
+        x = 0
+        y = 0
+        # горизонтальные линии
+        while y < HEIGHT + 1:
+            pygame.draw.line(self.display, WHITE, [x, y + 40], [WIDTH, y + 40], GRID_LINE_WIDTH)
+            y += HEIGHT / 10
 
-        x1 = WIDTH / 10
-        y1 = 0
-        x2 = WIDTH / 10
-        y2 = HEIGHT
-        while x1 != WIDTH and x2 != WIDTH:
-            pygame.draw.line(self.display, WHITE, [x1, y1 + 40], [x2, y2 + 40], GRID_LINE_WIDTH)
-            x1 += WIDTH / 10
-            x2 += WIDTH / 10
+        x = 0
+        y = 0
+        # вертикальные линии
+        while x < WIDTH + 1:
+            pygame.draw.line(self.display, WHITE, [x, y + 40], [x, HEIGHT + 40], GRID_LINE_WIDTH)
+            x += WIDTH / 10
 
     def draw_blocks(self, blocks):
         for block in blocks:
@@ -45,22 +41,25 @@ class Screen:
                                   WIDTH / 10 - GRID_LINE_WIDTH, HEIGHT / 10 - GRID_LINE_WIDTH))
 
     def draw(self, blocks):
-        # Заливаем черным
-        self.display.fill(BLACK)
+        self.reset()
         # Рисуем решетку
         self.__draw_grid()
 
         self.draw_blocks(blocks)
 
+    def reset(self):
+        # Заливаем черным
+        self.display.fill(BLACK)
+
     def update(self):
         # После отрисовки всего, отображаем
         pygame.display.update()
 
-    def draw_text(self, text):
-        size, x, y = 18, WIDTH / 2, 10
+    def draw_text(self, text, x=WIDTH / 2, y=10, color = WHITE):
+        size = 23
         font_name = pygame.font.match_font('arial')
         font = pygame.font.Font(font_name, size)
-        text_display = font.render(text, True, WHITE)
+        text_display = font.render(text, True, color)
         text_rect = text_display.get_rect()
         text_rect.midtop = (x, y)
         self.display.blit(text_display, text_rect)

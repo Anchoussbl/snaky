@@ -1,6 +1,5 @@
 from block import *
 from screen import YELLOW
-import random
 
 class Food:
     color = YELLOW
