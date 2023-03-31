@@ -25,6 +25,8 @@ class Game:
         self.state = GameState.Menu
         self.b_turns = []
         self.score = 0
+        self.speed = 1000
+
 
         self.key_to_dir = {pygame.K_UP: Direction.Up,
                            pygame.K_DOWN: Direction.Down,
@@ -56,7 +58,7 @@ class Game:
                         self.pause.handle_press(self, event.key)
 
 
-            if time_elapsed > 1000:
+            if time_elapsed > self.speed:
                 # Обновляем логику игры
                 if self.state == GameState.Running:
                     self.tick()
@@ -99,6 +101,13 @@ class Game:
             self.place_food()
             self.snake.add_block()
             self.score += 1
+            if self.speed >= 600:
+                self.speed -= 100
+            elif self.speed >= 400:
+                self.speed -= 50
+            else:
+                self.speed -= 10
+
 
     def handle_menu(self):
         self.menu.show(self)
