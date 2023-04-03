@@ -18,7 +18,7 @@ class Screen:
         pygame.display.set_caption("Snaky")
         self.display = pygame.display.set_mode((WIDTH, HEIGHT + 40))
 
-    def __draw_grid(self):
+    def draw_grid(self):
         x = 0
         y = 0
         # горизонтальные линии
@@ -33,19 +33,12 @@ class Screen:
             pygame.draw.line(self.display, WHITE, [x, y + 40], [x, HEIGHT + 40], GRID_LINE_WIDTH)
             x += WIDTH / 10
 
-    def draw_blocks(self, blocks):
-        for block in blocks:
-            if 10 >= block.x >= 0 and block.y <= 10 and block.y >= 0:
-                pygame.draw.rect(self.display, block.color,
-                                 (block.x * (WIDTH / 10) + 2.5, block.y * (HEIGHT / 10) + 2.5 + 40,
-                                  WIDTH / 10 - GRID_LINE_WIDTH, HEIGHT / 10 - GRID_LINE_WIDTH))
+    def draw_block(self, block):
+        if 10 >= block.x >= 0 and block.y <= 10 and block.y >= 0:
+            pygame.draw.rect(self.display, block.color,
+                         (block.x * (WIDTH / 10) + 2.5, block.y * (HEIGHT / 10) + 2.5 + 40,
+                          WIDTH / 10 - GRID_LINE_WIDTH, HEIGHT / 10 - GRID_LINE_WIDTH))
 
-    def draw(self, blocks):
-        self.reset()
-        # Рисуем решетку
-        self.__draw_grid()
-
-        self.draw_blocks(blocks)
 
     def reset(self):
         # Заливаем черным

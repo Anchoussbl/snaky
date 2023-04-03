@@ -70,9 +70,12 @@ class Game:
                     time_elapsed = 0
 
             if self.state == GameState.Running:
-                blocks = self.snake.blocks[:]
-                blocks.append(self.food.block)
-                self.screen.draw(blocks)
+                self.screen.reset()
+                # Рисуем решетку
+                self.screen.draw_grid()
+                self.screen.draw_block(self.food.block)
+                for block in self.snake.blocks:
+                    self.screen.draw_block(block)
                 self.screen.draw_text(str(self.score))
                 self.screen.draw_text(str("record: {}".format(self.rec)), x=80, y=10)
                 self.screen.update()
