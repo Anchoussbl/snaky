@@ -2,14 +2,18 @@ import pygame
 
 from screen import WIDTH, GREY, RED, HEIGHT
 from game_state import *
+from window import Window
 
-class Record:
-    def handle_press(self, game, key):
-        if key == pygame.K_RETURN:
-            game.state = GameState.Menu
+
+class Record(Window):
+    def __init__(self):
+        self.entries = {"Back": self.back}
+        self.static_texts = [""]
+        super(Record, self).__init__()
 
     def show(self, game):
-        game.screen.reset()
-        game.screen.draw_text("Current record: {}".format(game.rec), x=WIDTH/2, y=HEIGHT/2 - 60, color=RED)
-        game.screen.draw_text("Back", x=WIDTH/2, y=HEIGHT/2)
-        game.screen.update()
+        self.static_texts[0] = "Current record: {}".format(game.rec)
+        super(Record, self).show(game)
+
+    def back(self, game):
+        game.state = GameState.Menu

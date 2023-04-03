@@ -30,7 +30,6 @@ class Game:
         self.speed = 1000
         self.rec = 0
 
-
         self.key_to_dir = {pygame.K_UP: Direction.Up,
                            pygame.K_DOWN: Direction.Down,
                            pygame.K_LEFT: Direction.Left,
@@ -62,7 +61,6 @@ class Game:
                     elif self.state == GameState.Record:
                         self.record.handle_press(self, event.key)
 
-
             if time_elapsed > self.speed:
                 # Обновляем логику игры
                 if self.state == GameState.Running:
@@ -88,8 +86,6 @@ class Game:
             elif self.state == GameState.Record:
                 self.record.show(self)
 
-
-
         if not self.running:
             self.game_over()
 
@@ -98,7 +94,7 @@ class Game:
         for block in self.snake.blocks:
             if block.x < 0 or block.y < 0 or \
                     block.x >= 10 or block.y >= 10:
-                self.running = False
+                self.game_over()
 
         for block in self.snake.blocks:
             count = 0
@@ -155,6 +151,9 @@ class Game:
                 b.x += 1
 
     def game_over(self):
+        self.state = GameState.Menu
+
+    def quit(self):
         self.running = False
 
     def place_food(self):
