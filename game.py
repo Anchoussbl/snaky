@@ -74,7 +74,7 @@ class Game:
                 blocks.append(self.food.block)
                 self.screen.draw(blocks)
                 self.screen.draw_text(str(self.score))
-                self.screen.draw_text(str("record: {}".format(self.rec)), x=40, y=10)
+                self.screen.draw_text(str("record: {}".format(self.rec)), x=80, y=10)
                 self.screen.update()
             elif self.state == GameState.Menu:
                 # отрисовываем меню
@@ -118,7 +118,6 @@ class Game:
                 self.speed -= 50
             else:
                 self.speed -= 10
-
 
     def handle_menu(self):
         self.menu.show(self)
