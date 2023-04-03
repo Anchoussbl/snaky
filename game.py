@@ -3,6 +3,7 @@ from screen import *
 from snake import *
 from menu import *
 from pause import *
+from record import *
 from game_state import *
 import random
 
@@ -21,11 +22,13 @@ class Game:
         self.food = Food()
         self.menu = Menu()
         self.pause = Pause()
+        self.record = Record()
         self.place_food()
         self.state = GameState.Menu
         self.b_turns = []
         self.score = 0
         self.speed = 1000
+        self.rec = 0
 
 
         self.key_to_dir = {pygame.K_UP: Direction.Up,
@@ -56,6 +59,8 @@ class Game:
                         self.menu.handle_press(self, event.key)
                     elif self.state == GameState.Pause:
                         self.pause.handle_press(self, event.key)
+                    elif self.state == GameState.Record:
+                        self.record.handle_press(self, event.key)
 
 
             if time_elapsed > self.speed:
@@ -69,6 +74,7 @@ class Game:
                 blocks.append(self.food.block)
                 self.screen.draw(blocks)
                 self.screen.draw_text(str(self.score))
+                self.screen.draw_text(str(self.rec), x=10, y=10)
                 self.screen.update()
             elif self.state == GameState.Menu:
                 # отрисовываем меню
@@ -76,6 +82,8 @@ class Game:
             elif self.state == GameState.Pause:
                 # отрисовываем паузу
                 self.handle_pause()
+            elif self.state == GameState.Record:
+                self.record.show(self)
 
 
 
@@ -101,6 +109,9 @@ class Game:
             self.place_food()
             self.snake.add_block()
             self.score += 1
+            if self.score > self.rec:
+                self.rec += 1
+
             if self.speed >= 600:
                 self.speed -= 100
             elif self.speed >= 400:
@@ -159,3 +170,4 @@ class Game:
         self.state = GameState.Menu
         self.b_turns = []
         self.score = 0
+        self.speed = 1000

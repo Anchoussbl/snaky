@@ -6,6 +6,7 @@ from game_state import *
 class Menu:
     def __init__(self):
         self.entries = { "Start" : self.begin_game,
+                         "My record" : self.record,
                          "Exit" : self.exit }
         self.keys_list = list(self.entries.keys())
         self.current_entry = 0
@@ -41,3 +42,7 @@ class Menu:
 
     def exit(self, game):
         game.game_over()
+
+    def record(self, game):
+        game.state = GameState.Record
+
