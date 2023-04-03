@@ -102,7 +102,7 @@ class Game:
                 if block == b:
                     count += 1
             if count > 1:
-                self.running = False
+                self.game_over()
 
         if self.snake.blocks[0] == self.food.block:
             self.place_food()
