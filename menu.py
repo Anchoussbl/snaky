@@ -1,10 +1,5 @@
-import pygame
-
-from screen import WIDTH, GREY, WHITE
 from window import Window
 from game_state import *
-
-
 class Menu(Window):
     def __init__(self):
         self.entries = {"Start": self.begin_game,

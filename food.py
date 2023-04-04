@@ -1,6 +1,5 @@
 from block import *
 from screen import YELLOW
-
 class Food:
     color = YELLOW
     block = None

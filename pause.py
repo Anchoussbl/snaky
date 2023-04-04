@@ -1,9 +1,5 @@
-import pygame
-
-from screen import WIDTH, GREY, WHITE
 from game_state import *
 from window import Window
-
 class Pause(Window):
     def __init__(self):
         self.entries = {"Continue": self.continue_game,

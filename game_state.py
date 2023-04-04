@@ -5,3 +5,4 @@ class GameState(Enum):
     Running = 1
     Pause = 2
     Record = 3
+    GameOver = 4

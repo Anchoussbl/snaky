@@ -4,10 +4,9 @@ from snake import *
 from menu import *
 from pause import *
 from record import *
+from gameover import *
 from game_state import *
 import random
-
-
 class Game:
     running = True
 
@@ -23,6 +22,7 @@ class Game:
         self.menu = Menu()
         self.pause = Pause()
         self.record = Record()
+        self.gameover = GameOver()
         self.place_food()
         self.state = GameState.Menu
         self.b_turns = []
@@ -60,6 +60,8 @@ class Game:
                         self.pause.handle_press(self, event.key)
                     elif self.state == GameState.Record:
                         self.record.handle_press(self, event.key)
+                    elif self.state == GameState.GameOver:
+                        self.gameover.handle_press(self, event.key)
 
             if time_elapsed > self.speed:
                 # Обновляем логику игры
@@ -85,6 +87,8 @@ class Game:
                 self.handle_pause()
             elif self.state == GameState.Record:
                 self.record.show(self)
+            elif self.state == GameState.GameOver:
+                self.gameover.show(self)
 
         if not self.running:
             self.game_over()
@@ -151,7 +155,7 @@ class Game:
                 b.x += 1
 
     def game_over(self):
-        self.state = GameState.Menu
+        self.state = GameState.GameOver
 
     def quit(self):
         self.running = False

@@ -1,10 +1,5 @@
-import pygame
-
-from screen import WIDTH, GREY, RED, HEIGHT
 from game_state import *
 from window import Window
-
-
 class Record(Window):
     def __init__(self):
         self.entries = {"Back": self.back}

@@ -6,13 +6,11 @@ HEIGHT = 360
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+GREEN = (0, 150, 0)
 BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
+YELLOW = (250, 230, 0)
 GREY = (100, 100, 100)
 GRID_LINE_WIDTH = 3
-
-
 class Screen:
     def __init__(self):
         pygame.display.set_caption("Snaky")
@@ -25,7 +23,6 @@ class Screen:
         while y < HEIGHT + 1:
             pygame.draw.line(self.display, WHITE, [x, y + 40], [WIDTH, y + 40], GRID_LINE_WIDTH)
             y += HEIGHT / 10
-
         x = 0
         y = 0
         # вертикальные линии
@@ -38,7 +35,6 @@ class Screen:
             pygame.draw.rect(self.display, block.color,
                          (block.x * (WIDTH / 10) + 2.5, block.y * (HEIGHT / 10) + 2.5 + 40,
                           WIDTH / 10 - GRID_LINE_WIDTH, HEIGHT / 10 - GRID_LINE_WIDTH))
-
 
     def reset(self):
         # Заливаем черным

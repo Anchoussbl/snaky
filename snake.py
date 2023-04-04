@@ -1,7 +1,5 @@
 from block import *
 from screen import GREEN
-
-
 class Snake:
     color = GREEN
     blocks = []
