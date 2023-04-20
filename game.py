@@ -6,6 +6,7 @@ from pause import *
 from record import *
 from gameover import *
 from game_state import *
+from database import *
 import random
 class Game:
     running = True
@@ -25,10 +26,12 @@ class Game:
         self.gameover = GameOver()
         self.place_food()
         self.state = GameState.Menu
+        self.database = DataBase()
         self.b_turns = []
         self.score = 0
         self.speed = 1000
-        self.rec = 0
+        self.rec = self.database.load()["Player1"]
+
 
         self.key_to_dir = {pygame.K_UP: Direction.Up,
                            pygame.K_DOWN: Direction.Down,
@@ -158,6 +161,7 @@ class Game:
         self.state = GameState.GameOver
 
     def quit(self):
+        self.database.store({"Player1": self.rec})
         self.running = False
 
     def place_food(self):
